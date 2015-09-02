@@ -10,7 +10,7 @@ setup(
     author_email='sean@yak.net',
     url='https://meatspin.fr/',
     packages=find_packages(),
-    scripts=['codename'],
+    scripts=['codename', 'mkcodenamedb'],
     include_package_data=True,
     zip_safe=False,
 )

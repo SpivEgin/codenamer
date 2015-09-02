@@ -1,9 +1,22 @@
 #!/usr/bin/env python
 
-from random import choice
+import random
+import os.path
+import anydbm
+import sys
+
+DIR_DATA = 'data'
+DB_PATH  = os.path.join(DIR_DATA, 'words.db')
+COUNT = 5
 
 def main():
-    pass
+    db = anydbm.open(DB_PATH, 'r')
+    for i in xrange(COUNT):
+        word1 = random.choice(db.get('adj', '').split())
+        word2 = random.choice(db.get('noun', '').split())
+        print word1, word2
+
+    sys.exit(0)
 
 if __name__ == '__main__':
     main()
