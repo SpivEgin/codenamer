@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+'''Builds a new word database from the provided adjective and noun files.'''
+
+import os
+import os.path
+import anydbm
+import sys
+
+DIR_DATA = 'data'
+DIR_ADJ  = os.path.join(DIR_DATA, 'adj')
+DIR_NOUN = os.path.join(DIR_DATA, 'noun')
+DB_PATH  = os.path.join(DIR_DATA, 'words.db')
+
+def build(path, db, key):
+    words = db.get(key, '').split()
+    for path, dnames, fnames in os.walk(path):
+        for f in fnames:
+            with open(os.path.join(path, f), 'r') as fd:
+                words.extend(i.strip() for i in fd.readlines())
+    count = len(words)
+    words = '\n'.join(words)
+    db[key+'_count'] = str(count)
+    db[key] =  str(words)
+
+def main():
+    db = anydbm.open(DB_PATH, 'c')
+    build(DIR_ADJ, db, 'adj')
+    build(DIR_NOUN, db, 'noun')
+    db.close()
+    sys.exit(0)
+
+if __name__ == '__main__':
+    main()
+
